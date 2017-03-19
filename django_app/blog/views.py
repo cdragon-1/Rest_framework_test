@@ -10,7 +10,7 @@ from blog.models import Post
 def blog_page(request):
     post_list = Post.objects.all()
 
-    return HttpResponse('Hello World!' + post_list[0].title)
+    return HttpResponse('Hello World!' + post_list[2].title)
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -19,13 +19,13 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         # ModelSerializer는 Meta 클래스를 요구한다. 여기서는 model데이터만 넘겨줘도 충분함.
-        fields = ('id', 'reg_date', 'title', 'content',)
-
+        fields = ('id', 'reg_date', 'title', 'content', )
 
 class blog_api(GenericAPIView, mixins.ListModelMixin):
     queryset = Post.objects.all()
     # queryset은 어떠한 모델을 보여줄 것인가?를 정의한다.
     serializer_class = PostSerializer
+    # ListModelMixin은 GeneicAPIView에 queryset과 serializer_class를 기반으로 하여 데이터 List를 만들어주는 기능을 한다.
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
